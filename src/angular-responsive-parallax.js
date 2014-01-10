@@ -1,6 +1,7 @@
 // Test for the adaptation of the mr-responsive-parallax
 
 // requires picturefill.js and it's dom architecture
+// Only support for values between 0 and 1 at the moment
 
 
 (function (window, angular, undefined) {
@@ -18,8 +19,10 @@
 				// now this feels a bit jquery-like but whatever - get the elements!
 
 				var refElem = elem.parent(),
+					boundRect,
 					img,
-					pxMulti;
+					pxMulti,
+					vp;
 
 
 
@@ -61,12 +64,16 @@
 				var refreshData = function(){
 
 					img = getImg();
-					console.log(img);
-					pxMulti = scope.mrPxMaxPx;
+					pxMulti = parseFloat(scope.mrPxMaxPx);
+					vp = {
+						width: window.innerWidth || document.documentElement.clientWidth,
+						height: window.innerHeight || document.documentElement.clientHeight
+					};
+						
 
 					// only listen to scroll event if parallaxe is enabled for this picture size
 
-					if( img.noPx ){
+					if( img.noPx === true ){
 						pxMulti = 0;
 						angular.element(window).unbind('scroll', onScrollHandler);
 					}else{
@@ -82,29 +89,56 @@
 
 				var scaleImg = function(){
 
-					// get the size of the reference element
 					var refRect = refElem[0].getBoundingClientRect();
 
-					// ajust the height so we have enough for the parallaxe
-					refRect.height = refRect.height * ( 1 + pxMulti );
+					boundRect = {
+						width: vp.width,
+						height: 0
+					};
 
-					var refRatio = refRect.width / refRect.height,
-						imgRatio = img.oWidth / img.oHeight;
 
-					// scale to fill this rectangle
-					if( imgRatio > refRatio ){
+					// (1) calculate required size
 
-						img.height = refRect.height;
-						img.width = img.height * imgRatio;
+					if( pxMulti >= 0 && pxMulti <= 1 ){
+
+						boundRect.height = vp.height * (1-pxMulti) + refRect.height * pxMulti;
 
 					}else{
 
-						img.width = refRect.width;
+					}
+
+
+					// ???
+
+					
+
+					// (2) scale img
+					
+					scaleToFill(img, boundRect);
+
+
+				}
+
+
+				/*
+				 * Scale to fill Verfahren
+				 */
+
+				var scaleToFill = function(img, targetRect){
+
+					var targetRatio = targetRect.width / targetRect.height,
+						imgRatio = img.oWidth / img.oHeight;
+
+					if( imgRatio > targetRatio ){
+						img.height = targetRect.height;
+						img.width = img.height * imgRatio;
+
+					}else{
+						img.width = targetRect.width;
 						img.height = img.width / imgRatio;
 
 					}
 
-					// apply
 					img.elem.css('width', img.width+'px');
 					img.elem.css('height', img.height+'px');
 
@@ -118,40 +152,52 @@
 
 				var positionImg = function(){
 
-					// get the size and position of the reference element
 					var refRect = refElem[0].getBoundingClientRect(),
-						vp = {
-							width: window.innerWidth || document.documentElement.clientWidth,
-							height: window.innerHeight || document.documentElement.clientHeight
-						},
-						tY,
-						relRefPos,
-						posMulti,
-						maxOff,
-						imgTop;
+						p = 0,
+						newY = 0,
+						newX,
+						m = pxMulti;
 
 
-					// Calculate max offset (in both directions)
-					maxOff = (vp.height * 0.5) + (refRect.height * 0.5);
+					if( img.noPx !== true )
+					{
 
-					// calculate zero point / target coordinate
-					tY = (vp.height * 0.5) - (refRect.height * 0.5);
+						// (1) Animation progress
 
-					// reRect position relative to tY
-					relRefPos = (img.noPx === true) ? 0 : refRect.top - tY;
+						//p = (refRect.top + refRect.height) / (vp.height + refRect.height);
+						p = refRect.top / (vp.height - refRect.height);
 
-					// calculate multiplier that derives from reRefPos
-					posMulti = -relRefPos / maxOff;
 
-					// and finally the top position
-					imgTop = (-refRect.height * pxMulti) + (refRect.height * pxMulti * posMulti);
+						// (2) Image Position relative to viewport
 
+						if( pxMulti >= 0 && pxMulti <= 1 ){
+
+							newY = (vp.height - boundRect.height)*p*(1-m) + refRect.top*m;
+
+						}else{
+
+						}
+
+
+						// ???
+
+
+
+						// (3) Calculate relative position. Refrences: refRect and BoundRect
+
+						newY = newY - refRect.top - (img.height - boundRect.height)*0.5; //*0.5
+
+					}else{
+
+						newY = - (img.height - boundRect.height)*0.5;
+
+					}
 
 					
+					newX = -(img.width - boundRect.width)*0.5;
 
-
-					//apply
-					img.elem.css('top', imgTop+'px');
+					img.elem.css('top', newY+'px');
+					img.elem.css('left', newX+'px');
 
 
 				}
