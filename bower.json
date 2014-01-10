@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "main": "src/angular-responsiv-parallax.js",
   "dependencies": {
-    "picturefill": "~1.2.1"
+    "picturefill": "~1.2.1",
+    "angular": "~1.2.7"
   },
   "ignore": [
     "bower_components"
