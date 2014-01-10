@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Angular Page Enter Example</title>
+
+		<link href="example.css" media="screen, projection" rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+		<script type="text/javascript" src="bower_components/picturefill/picturefill.js"></script>
+		<script type="text/javascript" src="src/angular-responsive-parallax.js"></script>
+		<script type="text/javascript" src="example.js"></script>
+
+	</head>
+
+	<body ng-app="testApp">
+
+
+		<div class="parallax-section">
+
+
+
+
+
+
+
+			<!-- 
+				Responsive image with picutrefill.
+				Please notice the additional directives "mr-px-parallax", "mr-px-max-px" on the wrapper element.
+				As well as "mr-pix-size" and "mr-px-no-px" on the childs
+			-->
+
+			<span data-picture data-alt="nasa" class="mr-px-img" mr-px-parallax mr-px-max-px="0.5"> 
+
+				<span data-src="assets/img/hs-2007-16-a-500x768.jpg" mr-px-size="500,768" mr-px-no-px="true"></span>
+				<span data-src="assets/img/hs-2007-16-a-1280x960.jpg" mr-px-size="1280,960" data-media="(min-width: 500px)" ></span>
+				<span data-src="assets/img/hs-2007-16-a-1920x1200.jpg" mr-px-size="1920,1200" data-media="(min-width: 1400px)" ></span>
+
+				<!--[if (lt IE 9) & (!IEMobile)]>
+					<span data-src="assets/img/hs-2007-16-a-1280x960.jpg" mr-px-size="1280,960"></span>
+				<![endif]-->
+				<noscript>
+					<img src="assets/img/hs-2007-16-a-500x768.jpg" alt="">
+				</noscript>
+
+			</span>
+
+
+			<!-- Content -->
+
+			<h1>Hallo Nasa!</h1>
+
+
+
+
+
+
+		</div>
+
+
+
+
+		<div class="parallax-section">
+
+			<p>section with a white background</p>
+
+		</div>
+
+
+
+
+		<div class="parallax-section">
+
+
+			
+
+
+
+			<!-- 
+				Responsive image with picutrefill.
+				Please notice the additional directives "mr-px-parallax", "mr-px-max-px" on the wrapper element.
+				As well as "mr-pix-size" and "mr-px-no-px" on the childs
+			-->
+
+			<span data-picture data-alt="nasa" class="mr-px-img" mr-px-parallax mr-px-max-px="0.5"> 
+
+				<span data-src="assets/img/hs-2007-16-a-500x768.jpg" mr-px-size="500,768" mr-px-no-px="true"></span>
+				<span data-src="assets/img/hs-2007-16-a-1280x960.jpg" mr-px-size="1280,960" data-media="(min-width: 500px)" ></span>
+				<span data-src="assets/img/hs-2007-16-a-1920x1200.jpg" mr-px-size="1920,1200" data-media="(min-width: 1400px)" ></span>
+
+				<!--[if (lt IE 9) & (!IEMobile)]>
+					<span data-src="assets/img/hs-2007-16-a-1280x960.jpg" mr-px-size="1280,960"></span>
+				<![endif]-->
+				<noscript>
+					<img src="assets/img/hs-2007-16-a-500x768.jpg" alt="">
+				</noscript>
+
+			</span>
+
+
+			<!-- Content -->
+
+
+			<p>And another Nasa Background</p>
+
+
+
+			
+
+
+		</div>
+
+
+
+
+		<div class="parallax-section">&nbsp;</div>
+
+
+	</body>
+
+</html>

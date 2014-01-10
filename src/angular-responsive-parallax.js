@@ -138,7 +138,7 @@
 					tY = (vp.height * 0.5) - (refRect.height * 0.5);
 
 					// reRect position relative to tY
-					relRefPos = refRect.top - tY;
+					relRefPos = (img.noPx === true) ? 0 : refRect.top - tY;
 
 					// calculate multiplier that derives from reRefPos
 					posMulti = -relRefPos / maxOff;
