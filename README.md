@@ -56,5 +56,5 @@ var app = angular.module('testApp', [
 
 ## Thanks
 
-- https://gist.github.com/lorenzopolidori/3794226#file-has3d-js for the translate3d detection method.
+- https://gist.github.com/lorenzopolidori/3794226#file-has3d-js here's where i got the translate3d detection method.
 - http://ejohn.org/blog/getboundingclientrect-is-awesome/ for the introduction to the getBoundingClientRect function.
