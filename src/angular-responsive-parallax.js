@@ -8,7 +8,10 @@
 
 	var app = angular.module('mrResponsiveParallax', []);
 
-	app.directive('mrPxParallax', [ '$timeout', function($timeout){
+	app.value('containerDivId', 'mr-px-container');
+
+
+	app.directive('mrPxParallax', [ 'containerDivId', function(containerDivId){
 		return {
 			restrict: 'A',
 			scope: {
@@ -16,14 +19,15 @@
 			},
 			link: function(scope, elem, attr){
 
-				// now this feels a bit jquery-like but whatever - get the elements!
 
-				var refElem = elem.parent(),
+				var imgCont,
+					imgContImg,
+					refElem,
 					boundRect,
-					img,
+					imgData,
 					pxMulti,
-					vp;
-
+					vp,
+					t3d;
 
 
 
@@ -32,38 +36,79 @@
 				 * @return object elem, width and height as base of the 
 				 */
 
-				var getImg = function(){
+				var getImgData = function(){
+
+
+					// (1) Create the container image element in the background if it doesn't exist yet
+
+					if( !imgCont ){
+
+						// Check if the container-div exists, maybe created by another directive
+						var divCont = document.getElementById(containerDivId);
+
+						if(divCont === null) {
+							divCont = angular.element('<div style="position:fixed;left:0;top:0;zindex:-999;width:100%;height:100%"></div>');
+							divCont.attr('id',containerDivId);
+							angular.element(document.body).prepend(divCont);
+						}else{
+							divCont = angular.element(divCont);
+						}
+
+						// Two containers, one for cropping, one for holding the image.
+						imgCont = angular.element('<div style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;"></div>');
+						imgContImg = angular.element('<img style="position:absolute;">');
+
+						divCont.append(imgCont);
+						imgCont.append(imgContImg);
+
+					}
+					
+
+					// (2) Find the original image element inserted by picturefill.js
 
 					var img = elem.find('img'),
 						parent = img.parent(),
-						dims = parent.attr('mr-px-size').split(',');
+						dims = parent.attr('mr-px-size').split(','),
+						noPx = (parent.attr('mr-px-no-px') === 'true');
 
-					// as there should be only one img element at a time, this should always give us the right image
-					//img.elem = elem.find('img');
 
-					//img.elem.parent().attr('mr-px-size').split(',');
+					// (3) Change the source of the container img and hide the original
 
-					//console.log( (parent.attr('mr-px-no-px') === 'true') );
+					if( !noPx ){
+
+						imgCont.css('display','block');
+						imgContImg.attr('src',img.attr('src'));
+						img.css('display','none');
+						//parent.remove(img);
+
+					}else{
+
+						imgCont.css('display','none');
+						imgContImg.attr('src','');
+						img.css('display','block');
+
+					}
+
+					
+					// (4) Return new data
 
 					return {
 						elem: img,
 						oWidth: parseInt(dims[0]),
 						oHeight: parseInt(dims[1]),
-						noPx: (parent.attr('mr-px-no-px') === 'true')
+						noPx: noPx
 					};
 
 				}
 
 
-
 				/*
-				 * Refreshes all data that cang if picutrefill.js changes the dom
-				 * @return object elem, width and height as base of the 
+				 * Refreshes all data that change if picutrefill.js changes the dom
 				 */
 
 				var refreshData = function(){
 
-					img = getImg();
+					imgData = getImgData();
 					pxMulti = parseFloat(scope.mrPxMaxPx);
 					vp = {
 						width: window.innerWidth || document.documentElement.clientWidth,
@@ -73,12 +118,12 @@
 
 					// only listen to scroll event if parallaxe is enabled for this picture size
 
-					if( img.noPx === true ){
+					if( imgData.noPx === true ){
 						pxMulti = 0;
 						angular.element(window).unbind('scroll', onScrollHandler);
 					}else{
 						angular.element(window).bind('scroll', onScrollHandler);
-					}	
+					}
 
 				}
 
@@ -105,44 +150,37 @@
 
 					}else{
 
+						// TODO: implement more modi!
+
 					}
-
-
-					// ???
-
 					
 
-					// (2) scale img
-					
-					scaleToFill(img, boundRect);
+					// (2) scale to fill precodure
 
-
-				}
-
-
-				/*
-				 * Scale to fill Verfahren
-				 */
-
-				var scaleToFill = function(img, targetRect){
-
-					var targetRatio = targetRect.width / targetRect.height,
-						imgRatio = img.oWidth / img.oHeight;
+					var targetRect = (imgData.noPx) ? refRect : boundRect,
+						imgElem = (imgData.noPx) ? imgData.elem: imgContImg,
+						targetRatio = targetRect.width / targetRect.height,
+						imgRatio = imgData.oWidth / imgData.oHeight;
 
 					if( imgRatio > targetRatio ){
-						img.height = targetRect.height;
-						img.width = img.height * imgRatio;
-
+						imgData.height = targetRect.height;
+						imgData.width = imgData.height * imgRatio;
 					}else{
-						img.width = targetRect.width;
-						img.height = img.width / imgRatio;
-
+						imgData.width = targetRect.width;
+						imgData.height = imgData.width / imgRatio;
 					}
 
-					img.elem.css('width', img.width+'px');
-					img.elem.css('height', img.height+'px');
+					imgElem.css('width', imgData.width+'px');
+					imgElem.css('height', imgData.height+'px');
+
+
+					// (3) crop container
+
+					imgCont.css('height', refRect.height+'px');
+
 
 				}
+
 
 
 
@@ -156,15 +194,17 @@
 						p = 0,
 						newY = 0,
 						newX,
-						m = pxMulti;
+						m = pxMulti,
+						imgElem = (imgData.noPx) ? imgData.elem : imgContImg;
 
 
-					if( img.noPx !== true )
+					newX = -(imgData.width - boundRect.width)*0.5;
+
+					if( !imgData.noPx )
 					{
 
 						// (1) Animation progress
 
-						//p = (refRect.top + refRect.height) / (vp.height + refRect.height);
 						p = refRect.top / (vp.height - refRect.height);
 
 
@@ -176,32 +216,73 @@
 
 						}else{
 
+							// TODO: implement more modi!
+
 						}
-
-
-						// ???
-
 
 
 						// (3) Calculate relative position. Refrences: refRect and BoundRect
 
-						newY = newY - refRect.top - (img.height - boundRect.height)*0.5; //*0.5
+						newY = newY - refRect.top - (imgData.height - boundRect.height)*0.5;
 
 					}else{
 
-						newY = - (img.height - boundRect.height)*0.5;
+						newY = - (imgData.height - refRect.height)*0.5;
 
 					}
 
-					
-					newX = -(img.width - boundRect.width)*0.5;
 
-					img.elem.css('top', newY+'px');
-					img.elem.css('left', newX+'px');
+					// use translate3d if it's available for hardware accelleration
 
+					if(t3d !== 'none'){
+						imgCont.css(t3d, 'translate3d(0px,'+refRect.top+'px,0)');
+						imgElem.css(t3d, 'translate3d('+newX+'px, '+newY+'px,0px)');
+
+					}else{
+
+						imgCont.css('top', refRect.top+'px');
+						imgElem.css('top', newY+'px');
+						imgElem.css('left', newX+'px');
+
+					}
 
 				}
-				
+
+
+				/*
+				 * Check for transform and translate3D support
+				 * based on https://gist.github.com/lorenzopolidori/3794226#file-has3d-js
+				 * @returns string 'none' if no support, or the right transform css attribute
+				 */
+
+				var check3d = function(){
+
+					var el = document.createElement('p'),
+						has3d,
+						transforms = {
+							'webkitTransform':'-webkit-transform',
+							'OTransform':'-o-transform',
+							'msTransform':'-ms-transform',
+							'MozTransform':'-moz-transform',
+							'transform':'transform'
+						},
+						supportedTransform;
+
+						document.body.insertBefore(el, null);
+
+						for(var t in transforms){
+							if( el.style[t] !== undefined ){
+								el.style[t] = 'translate3d(1px,1px,1px)';
+								has3d = window.getComputedStyle(el).getPropertyValue(transforms[t]);
+								supportedTransform = t;
+							}
+						}
+
+						document.body.removeChild(el);
+
+					return (has3d !== undefined && has3d.length > 0 && has3d !== "none") ? supportedTransform : 'none';
+
+				}
 
 
 				/*
@@ -247,6 +328,14 @@
 				}
 
 
+
+
+				// Check for transform3D support
+				t3d = check3d();
+				console.log(check3d());
+
+				// Get the reference element that we use to detect the position relative to the viewport
+				refElem = elem.parent();
 				
 
 				angular.element(window).bind('load', onLoadHandler);
