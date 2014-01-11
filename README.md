@@ -2,6 +2,8 @@
 
 Parallax backgrounds with responsive images.
 
+**Demo:** http://marcorei.github.io/example/angular-responsive-parallax/example.html
+
 ## How it works
 
 <a href="https://github.com/scottjehl/picturefill">picturefill.js</a> provides a great way to deliver different images for different screen sizes. **angular-responsive-parallax** uses these images to create a scrolling parallax.
