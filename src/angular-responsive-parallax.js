@@ -332,7 +332,6 @@
 
 				// Check for transform3D support
 				t3d = check3d();
-				console.log(check3d());
 
 				// Get the reference element that we use to detect the position relative to the viewport
 				refElem = elem.parent();
