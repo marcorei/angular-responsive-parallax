@@ -51,7 +51,7 @@
 						var divCont = document.getElementById(containerDivId);
 
 						if(divCont === null) {
-							divCont = angular.element('<div style="position:fixed;left:0;top:0;zindex:-999;width:100%;height:100%"></div>');
+							divCont = angular.element('<div style="position:fixed;left:0;top:0;z-index:-999;width:100%;height:100%"></div>');
 							divCont.attr('id',containerDivId);
 							angular.element(document.body).prepend(divCont);
 						}else{
@@ -112,6 +112,8 @@
 
 				var refreshData = function(){
 
+					angular.element(window).unbind('scroll', onScrollHandler);
+
 					imgData = getImgData();
 					pxMulti = parseFloat(scope.mrPxMaxPx);
 					vp = {
@@ -124,7 +126,6 @@
 
 					if( imgData.noPx === true ){
 						pxMulti = 0;
-						angular.element(window).unbind('scroll', onScrollHandler);
 					}else{
 						angular.element(window).bind('scroll', onScrollHandler);
 					}
@@ -253,6 +254,24 @@
 				}
 
 
+
+				/*
+				 * Destroy routine
+				 */
+
+				var destroy = function(){
+
+					angular.element(window).unbind('resize', onResizeHandler);
+					angular.element(window).unbind('scroll', onScrollHandler);
+
+					if( imgCont ){
+						imgCont.parent().remove(imgCont);
+						imgContImg = null;
+					}
+
+				}
+
+
 				/*
 				 * Check for transform and translate3d support
 				 * based on https://gist.github.com/lorenzopolidori/3794226#file-has3d-js
@@ -341,7 +360,12 @@
 				refElem = elem.parent();
 				
 
+				// Add listeners for building and destroying
 				angular.element(window).bind('load', onLoadHandler);
+				
+				scope.$on('$destroy', function(){
+					destroy();
+				});
 
 
 			}
