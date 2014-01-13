@@ -20,13 +20,11 @@ Example files are included in the repository. Anyway, i will show you around.
 First you need to build your HTML like you are used to from picturefill.js
 
 ```html
-<pre>
 <span data-picture data-alt="nasa" class="mr-px-img" mr-px-parallax mr-px-max-px="0.1">
 	<span data-src="assets/img/hs-2007-16-a-500x768.jpg" mr-px-size="500,768" mr-px-no-px="true"></span>
 	<span data-src="assets/img/hs-2007-16-a-1280x960.jpg" mr-px-size="1280,960" data-media="(min-width: 500px)" ></span>
 	<span data-src="assets/img/hs-2007-16-a-1920x1200.jpg" mr-px-size="1920,1200" data-media="(min-width: 1400px)" ></span>
 </span>
-</pre>
 ```
 
 Here is a list of attributes you'll need in addition to those from picturefill.js
