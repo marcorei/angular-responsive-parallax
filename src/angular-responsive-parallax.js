@@ -51,7 +51,7 @@
 						var divCont = document.getElementById(containerDivId);
 
 						if(divCont === null) {
-							divCont = angular.element('<div style="position:fixed;left:0;top:0;z-index:-999;width:100%;height:100%"></div>');
+							divCont = angular.element('<div style="position:fixed;left:0;top:0;z-index:0;width:100%;height:100%;"></div>');
 							divCont.attr('id',containerDivId);
 							angular.element(document.body).prepend(divCont);
 						}else{
@@ -59,7 +59,7 @@
 						}
 
 						// Two containers, one for cropping, one for holding the image.
-						imgCont = angular.element('<div style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;"></div>');
+						imgCont = angular.element('<div style="position:fixed;left:0;top:0;width:100%;height:100%;overflow:hidden;"></div>');
 						imgContImg = angular.element('<img style="position:absolute;">');
 
 						divCont.append(imgCont);
@@ -304,8 +304,8 @@
 						document.body.removeChild(el);
 
 					return (has3d !== undefined && has3d.length > 0 && has3d !== "none") ? supportedTransform : 'none';
-
-				}
+						
+				}	
 
 
 				/*
