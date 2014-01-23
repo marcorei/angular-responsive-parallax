@@ -73,7 +73,8 @@
 					var img = elem.find('img'),
 						parent = img.parent(),
 						dims = parent.attr('mr-px-size').split(','),
-						noPx = (parent.attr('mr-px-no-px') === 'true');
+						noPx = (parent.attr('mr-px-no-px') === 'true'),
+						focal = (parseFloat(parent.attr('mr-px-focal')) >= -1 && parseFloat(parent.attr('mr-px-focal')) <= 1 ) ? parseFloat(parent.attr('mr-px-focal')) : 0;
 
 
 					// (3) Change the source of the container img and hide the original
@@ -100,7 +101,8 @@
 						elem: img,
 						oWidth: parseInt(dims[0]),
 						oHeight: parseInt(dims[1]),
-						noPx: noPx
+						noPx: noPx,
+						focal: focal
 					};
 
 				}
@@ -228,7 +230,7 @@
 
 						// (3) Calculate relative position. Refrences: refRect and boundRect
 
-						newY = newY - refRect.top - (imgData.height - boundRect.height)*0.5;
+						newY = newY - refRect.top - (imgData.height - boundRect.height)*0.5*(1-imgData.focal);
 
 					}else{
 
