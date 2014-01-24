@@ -38,6 +38,7 @@ On the container span element:
 On the child span elements:
 - **mr-px-size** the size of the image
 - [optional] **mr-px-no-px** set this value to "true" if you want to disable the effect for this particular image size.
+- [optional] **mr-px-focal** set the vertical focal point of the image. default ist 0, value ranges from 1 to -1.
 
 ### CSS
 
