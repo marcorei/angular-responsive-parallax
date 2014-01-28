@@ -1,6 +1,6 @@
 {
   "name": "angular-responsiv-parallax",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "src/angular-responsiv-parallax.js",
   "dependencies": {
     "picturefill": "~1.2.1",
