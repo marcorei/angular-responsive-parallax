@@ -83,14 +83,14 @@
 
 						imgCont.css('display','block');
 						imgContImg.attr('src',img.attr('src'));
-						img.css('display','none');
+						elem.css('display','none');
 						//parent.remove(img);
 
 					}else{
 
 						imgCont.css('display','none');
 						imgContImg.attr('src','');
-						img.css('display','block');
+						elem.css('display','block');
 
 					}
 
@@ -361,6 +361,8 @@
 				// Get the reference element for the position relative to the viewport
 				refElem = elem.parent();
 				
+				// fade out standard
+				elem.css('display','none');
 
 				// Add listeners for building and destroying
 				angular.element(window).bind('load', onLoadHandler);
