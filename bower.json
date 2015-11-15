@@ -8,5 +8,9 @@
   },
   "ignore": [
     "bower_components"
+  ],
+  "license": "MIT",
+  "authors": [
+    "Markus Riegel <riegel.markus@googlemail.com"
   ]
 }
