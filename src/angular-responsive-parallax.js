@@ -1,12 +1,9 @@
-/*
- * Angular responsive parallax
- * an angularJS directive for a parallax effect based on responsive images by picutrefill.js
- * 
- * Only supports parallax values from 0 to 1 at the moment
+/*!
+ * Angular Responsive Parallax
  *
- * @author Markus Riegel <riegel.markus@googlemail.com>
+ * (c) 2014 Markus Riegel <riegel.markus@googlemail.com>
+ * License: MIT
  */
-
 
 (function (window, angular, undefined) {
 
