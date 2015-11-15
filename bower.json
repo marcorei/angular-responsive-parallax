@@ -1,16 +1,17 @@
 {
   "name": "angular-responsive-parallax",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "src/angular-responsive-parallax.js",
   "dependencies": {
     "picturefill": "~1.2.1",
     "angular": "~1.2.7"
   },
   "ignore": [
-    "bower_components"
+    "bower_components",
+    "node_modules"
   ],
   "license": "MIT",
   "authors": [
-    "Markus Riegel <riegel.markus@googlemail.com"
+    "Markus Riegel <riegel.markus@googlemail.com>"
   ]
 }

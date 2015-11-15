@@ -1,7 +1,7 @@
 /*!
  * Angular Responsive Parallax
  *
- * (c) 2014 Markus Riegel <riegel.markus@googlemail.com>
+ * (c) 2014-2015 Markus Riegel <riegel.markus@googlemail.com>
  * License: MIT
  */
 
