@@ -9,7 +9,7 @@
 	var app = angular.module('mrResponsiveParallax', []);
 	
 	app.value('containerDivId', 'mr-px-container');
-	app.directive('mrPxParallax', [ 'containerDivId', function(containerDivId){
+	app.directive('mrPxParallax', [ 'containerDivId', '$timeout', function(containerDivId, $timeout){
 		return {
 			restrict: 'A',
 			scope: {
@@ -257,8 +257,9 @@
 				// fade out standard
 				elem.css('display','none');
 
-				// Add listeners for building and destroying
-				angular.element(window).bind('load', onLoadHandler);
+				// Init via $timeout instead of load event.
+				// See http://stackoverflow.com/a/779785/4134167
+				$timeout(onLoadHandler);
 				
 				scope.$on('$destroy', function(){
 					destroy();
