@@ -2,7 +2,7 @@
 
 Parallax backgrounds with responsive images.
 
-**Demo:** http://marcorei.github.io/example/angular-responsive-parallax/example.html
+**[Demo](http://marcorei.github.io/example/angular-responsive-parallax/example/example.html)** 
 
 ## How it works
 
