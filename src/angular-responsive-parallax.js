@@ -26,6 +26,7 @@
 					t3d,
 					frameRequestId;
 
+				window.picturefill()
 
 				/*
 				 * Create container elements and query the dom for all infos about the image
