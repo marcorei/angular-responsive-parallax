@@ -4,7 +4,8 @@
   "main": "src/angular-responsive-parallax.js",
   "dependencies": {
     "picturefill": "~1.2.1",
-    "angular": "~1.2.7"
+    "angular": "~1.5.8",
+    "requestAnimationFrame": "https://github.com/thomaswelton/requestAnimationFrame.git#1cbd67a797878e2e8bf21d30bb19f83df63f8028"
   },
   "ignore": [
     "bower_components",

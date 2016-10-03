@@ -23,7 +23,9 @@
 					imgData,
 					pxMulti,
 					vp,
-					t3d;
+					t3d,
+					frameRequestId;
+
 
 				/*
 				 * Create container elements and query the dom for all infos about the image
@@ -86,7 +88,10 @@
 				 * Refreshes all data that changes if picutrefill.js changes the dom
 				 */
 				var refreshData = function(){
-					angular.element(window).unbind('scroll', onScrollHandler);
+					if(!frameRequestId) {
+						window.cancelAnimationFrame(frameRequestId);
+						frameRequestId = null;
+					}
 					imgData = getImgData();
 					pxMulti = parseFloat(scope.mrPxMaxPx);
 					vp = {
@@ -97,7 +102,7 @@
 					if( imgData.noPx === true ){
 						pxMulti = 0;
 					}else{
-						angular.element(window).bind('scroll', onScrollHandler);
+						frameRequestId = window.requestAnimationFrame(onRequestAnimationHandler)
 					}
 				}
 
@@ -238,14 +243,17 @@
 				var onResizeHandler = function(){
 					refreshData();
 					scaleImg();
-					onScrollHandler();
+					if(!frameRequestId) {
+						frameRequestId = window.requestAnimationFrame(onRequestAnimationHandler)
+					}
 				}
 
 				/*
-				 * onScroll Handler
+				 * requestAnimationFrame Handler
 				 */
-				var onScrollHandler = function(){
+				var onRequestAnimationHandler = function() {
 					positionImg();
+					frameRequestId = window.requestAnimationFrame(onRequestAnimationHandler);
 				}
 
 				// Check for transform3d support
