@@ -194,12 +194,12 @@
 				 */
 				var destroy = function(){
 					angular.element(window).unbind('resize', onResizeHandler);
-					if(!frameRequestId) {
+					if(frameRequestId) {
 						window.cancelAnimationFrame(frameRequestId);
 						frameRequestId = null;
 					}
-					if( imgCont ){
-						imgCont.parent().remove(imgCont);
+					if(imgCont){
+						imgCont.remove(imgCont);
 						imgContImg = null;
 					}
 				}
