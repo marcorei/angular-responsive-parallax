@@ -89,7 +89,7 @@
 				 * Refreshes all data that changes if picutrefill.js changes the dom
 				 */
 				var refreshData = function(){
-					if(!frameRequestId) {
+					if(frameRequestId) {
 						window.cancelAnimationFrame(frameRequestId);
 						frameRequestId = null;
 					}
