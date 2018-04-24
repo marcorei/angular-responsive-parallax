@@ -1,3 +1,7 @@
+**⚠️ This project is no longer maintained ⚠️**
+
+***
+
 # angular-responsive-parallax
 
 Parallax backgrounds with responsive images.
